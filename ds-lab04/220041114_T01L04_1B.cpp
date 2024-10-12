@@ -9,6 +9,7 @@ struct node{
     node *next;
 };
 node *head=nullptr;
+node* tail=nullptr;
 bool isempty(){
     return head==nullptr;
 }
@@ -21,7 +22,7 @@ node* createnode(int x){
 void insert_front(int x){
     node* newnode=createnode(x);
     if(head==nullptr){
-        head=newnode;
+        head=tail=newnode;
     }
     else{
         newnode->next=head;
@@ -31,14 +32,11 @@ void insert_front(int x){
 void insert_back(int x){
     node* newnode=createnode(x);
     if(head==nullptr){
-        head=newnode;
+        head=tail=newnode;
     }
     else{
-        node *temp=head;
-        while(temp->next!=nullptr){
-            temp=temp->next;
-        }
-        temp->next=newnode;
+        tail->next=newnode;
+        tail=newnode;
     }
 }
 void insert_after_node(int x,int v){
@@ -51,6 +49,9 @@ void insert_after_node(int x,int v){
         node* newnode=createnode(x);
         newnode->next=temp->next;
         temp->next=newnode;
+        if(temp==tail){
+            tail=newnode;
+        }
     }
     else{
         cout<<"Value Not found"<<endl;
@@ -73,66 +74,67 @@ void update_node(int key,int v){
 void remove_head(){
     if(head==nullptr){
         cout<<"Underflow"<<endl;
+        return ;
     }
     node* temp=head;
     head=head->next;
     delete temp;
+    if(head==nullptr) {
+        tail=nullptr;
+    }
 }
 void remove_back() {
     if (isempty()) {
         cout << "Underflow" << endl;
         return;
     }
-    if (head->next == nullptr) { 
+    if (head==tail) { 
         delete head; 
-        head = nullptr; 
+        head=tail=nullptr; 
     } else {
-        node* temp = head;
-        while (temp->next->next != nullptr) { 
-            temp = temp->next;
+        node* temp=head;
+        while(temp->next!=tail){
+            temp=temp->next;
         }
-        delete temp->next; 
-        temp->next = nullptr; 
+        delete tail;
+        tail=temp;
+        tail->next=nullptr;
     }
 }
-
-
 void remove_element(int key){
-    
+    if(isempty()){
+        cout<<"Value Not Found"<<endl;
+        return;
+    }
     if(head->data==key){
         remove_head();
     }
     node* temp=head;
     
-    while(temp!=nullptr && temp->next->data!=key){
+    while(temp!=nullptr && temp->next!=nullptr && temp->next->data!=key){
         temp=temp->next;
     }
-    if(temp->next!=nullptr){
+    if(temp!=nullptr &&temp->next!=nullptr){
         node* toDelete=temp->next;
         temp->next=temp->next->next;
+        if(toDelete==tail){
+            tail=temp;
+        }
         delete toDelete;
     }
     else{
         cout<<"Value Not found"<<endl;
+        return ;
     }
 }
-node* getTail(node* &head) {
-    if (head==nullptr) {
-        return nullptr;
-    }
-    node* temp=head;
-    while (temp->next!=nullptr) {
-        temp=temp->next;
-    }
-    return temp;
-}
+
 void printlist() {
     if (isempty()) {
-        cout <<"Head=Null, Tail=Null, List is Empty"<< endl;
+        cout <<"Head=Null, Tail=Null, Empty"<< endl;
         return;
     }
     cout<<"Head="<<head->data;
-    node* tail=getTail(head);
+    
     if (tail!=nullptr) {
         cout <<", Tail=" << tail->data;
     cout << ", ";
