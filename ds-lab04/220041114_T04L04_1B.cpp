@@ -1,4 +1,6 @@
 #include<iostream>
+#include<string>
+#include<sstream>
 using namespace std;
 struct node{
     int data;
@@ -58,16 +60,17 @@ void display(node* head){
             cout<<temp->data<<" ";
             temp=temp->next;
         }
-        cout<<endl;
+        cout<<"NULL"<<endl;
     }
 }
 int main(){
-    //node* list=nullptr;
-    int a;
-    while(1){
-        cin>>a;
-        if(a==-1) break;
-        insertback(a);
+    string a;
+    getline(cin,a);
+    istringstream iss(a);
+    string val;
+    while(iss>>val){
+        if(val=="NULL") break;
+        insertback(stoi(val));
     }
     node* ans=rearrange(head);
     display(ans);
