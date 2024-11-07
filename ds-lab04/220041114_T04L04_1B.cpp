@@ -1,52 +1,46 @@
 #include<iostream>
 #include<string>
-#include<sstream>
+#include<algorithm>
+#include<vector>
+#define ll long long 
 using namespace std;
 struct node{
     int data;
-    node* next;
+    node *next;
 };
-node* head=nullptr;
-node* tail=nullptr;
-bool isempty(){
-    return head==nullptr && tail==nullptr;
-}
+node *head=nullptr;
+node *tail=nullptr;
 node* createnode(int x){
     node* newnode=new node();
     newnode->data=x;
     newnode->next=nullptr;
-    //newnode->prev=nullptr;
     return newnode;
 }
-void insertback(int data){
-    node* new_node= createnode(data);
-    if(isempty()){
-        
-        head=tail=new_node;
+void insert_back(int x){
+    node* newnode=createnode(x);
+    if(head==nullptr){
+        head=tail=newnode;
     }
     else{
-        tail->next=new_node;
-        //new_node->prev=tail;
-        
+        tail->next=newnode;
+        tail=newnode;
     }
-    tail=new_node;
-    
 }
-node* rearrange(node*& head) {
+node* remove_duplicate(node*& head){
     if (head == nullptr || head->next == nullptr) {
         return head; 
     }
-    node* odd=head;
-    node* even=head->next;
-    node* evenhead=even;
-    while(even!=nullptr && even->next!=nullptr){
-        odd->next=even->next;
-        odd=odd->next;
-        even->next=odd->next;
-        even=even->next;
-
+    node* temp=head;
+    while(temp!=nullptr && temp->next!=nullptr){
+        if(temp->data==temp->next->data){
+            node* dup=temp->next;
+            temp->next=temp->next->next;
+            delete dup;
+        }
+        else{
+            temp=temp->next;
+        }
     }
-    odd->next=evenhead;
     return head;
 }
 void display(node* head){
@@ -60,18 +54,17 @@ void display(node* head){
             cout<<temp->data<<" ";
             temp=temp->next;
         }
-        cout<<"NULL"<<endl;
+        //cout<<"NULL"<<endl;
     }
 }
 int main(){
-    string a;
-    getline(cin,a);
-    istringstream iss(a);
-    string val;
-    while(iss>>val){
-        if(val=="NULL") break;
-        insertback(stoi(val));
+    //node* list1=nullptr;
+    int a;
+    while(1){
+        cin>>a;
+        if(a==-1) break;
+        insert_back(a);
     }
-    node* ans=rearrange(head);
+    node* ans=remove_duplicate(head);
     display(ans);
 }
