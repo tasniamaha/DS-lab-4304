@@ -53,4 +53,5 @@ int main(){
         int j=floor(log2(window));
         cout << "\nQuery-" << i<< ": Min="<<min(table[l][j],table[r-(1<<j)+1][j])<<" min([" << l + 1 << "," << r + 1 << "])"<<endl; 
     }
+
 }

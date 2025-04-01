@@ -1,6 +1,7 @@
 #include<iostream>
 #include<vector>
 using namespace std;
+
 void printadjlist(vector<vector<int>> adjlist,int V){
     cout<<"Adjacency List:\n";
     for(int i=0;i<V;i++){
@@ -11,6 +12,7 @@ void printadjlist(vector<vector<int>> adjlist,int V){
         cout<<endl;
     }
 }
+
 void printadjmatrix(vector<vector<int>> adjmatrix,int V){
     cout<<"Adjacency Matrix:\n";
     for(int i=0;i<V;i++){
@@ -20,6 +22,7 @@ void printadjmatrix(vector<vector<int>> adjmatrix,int V){
         cout<<endl;
     }
 }
+
 int main(){
     int V,E;
     cin>>V>>E;
